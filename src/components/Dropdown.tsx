@@ -1,11 +1,6 @@
 import React, { useMemo } from 'react';
 import { Person } from '../types/Person';
 
-type Props = {
-  people: Person[];
-  onSelected: (people: Person | null) => void;
-};
-
 function debounce<T>(callback: T, delay: number) {
   let timerId = 0;
 
@@ -18,7 +13,18 @@ function debounce<T>(callback: T, delay: number) {
   };
 }
 
-export const Dropdown: React.FC<Props> = ({ people, onSelected }) => {
+type Props = {
+  people: Person[];
+  onSelected: (people: Person | null) => void;
+  delay: number;
+};
+
+export const Dropdown: React.FC<Props> = (
+  {
+    people,
+    onSelected,
+    delay = 300,
+  }) => {
   const [query, setQuery] = React.useState('');
   const [isActive, setIsActive] = React.useState(false);
   const [appliesQuery, setAppliesQuery] = React.useState('');
@@ -29,7 +35,7 @@ export const Dropdown: React.FC<Props> = ({ people, onSelected }) => {
     );
   }, [appliesQuery, people]);
 
-  const applyQuery = useMemo(() => debounce(setAppliesQuery, 300), []);
+  const applyQuery = useMemo(() => debounce(setAppliesQuery, delay), [delay]);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onSelected(null);
