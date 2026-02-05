@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Person } from '../types/Person';
 
 type Props = {
@@ -24,14 +24,13 @@ export const Dropdown: React.FC<Props> = ({ people, onSelected }) => {
   const [isActive, setIsActive] = React.useState(false);
   const [appliesQuery, setAppliesQuery] = React.useState('');
 
-
   const filteredPeople = useMemo(() => {
     return people.filter((person: Person) =>
       person.name.toLowerCase().includes(appliesQuery.toLowerCase()),
     );
   }, [appliesQuery, people]);
 
-  const applyQuery = useCallback(debounce(setAppliesQuery, 300), []);
+  const applyQuery = useMemo(() => debounce(setAppliesQuery, 300), []);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onSelected(null);
