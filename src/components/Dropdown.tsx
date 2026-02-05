@@ -4,10 +4,9 @@ import { Person } from '../types/Person';
 type Props = {
   people: Person[];
   onSelected: (people: Person | null) => void;
-  selectedPeople: Person[];
 };
 
-function debounce(callback, delay: number = 300) {
+function debounce<T>(callback: T, delay: number) {
   let timerId = 0;
 
   return (...args) => {
@@ -35,7 +34,7 @@ export const Dropdown: React.FC<Props> = ({ people, onSelected }) => {
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onSelected(null);
     setQuery(event.target.value);
-    applyQuery(event.target.value);
+    applyQuery(event.target.value.trim());
   };
 
   return (
@@ -63,6 +62,7 @@ export const Dropdown: React.FC<Props> = ({ people, onSelected }) => {
                   onClick={() => {
                     onSelected(person);
                     setQuery(person.name);
+                    setIsActive(false);
                   }}
                 >
                   <p
